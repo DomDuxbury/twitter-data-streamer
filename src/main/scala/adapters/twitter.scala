@@ -34,10 +34,6 @@ object twitterStreamer {
     twitterStream.addListener(postgresStatusListener())
     twitterStream.filter(new FilterQuery().track(keywords))
 
-    //Thread.sleep(30000)
-
-    //twitterStream.cleanUp
-    //twitterStream.shutdown
   }
 }
 

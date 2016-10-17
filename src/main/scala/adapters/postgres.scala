@@ -1,12 +1,30 @@
 package adapters.postgres
 import scalikejdbc._
+// import scalikejdbc.config._
 import adapters.twitter._
 
 object postgres {
-  // initialize JDBC driver & connection pool
+
+  // Disable logging
+  GlobalSettings.loggingSQLAndTime = LoggingSQLAndTimeSettings(
+    enabled = false,
+    singleLineMode = false,
+    printUnprocessedStackTrace = false,
+    stackTraceDepth= 15,
+    logLevel = 'debug,
+    warningEnabled = false,
+    warningThresholdMillis = 3000L,
+    warningLogLevel = 'warn
+  )
+
+  // Initial postgres drivers and set AutoSession
   Class.forName("org.postgresql.Driver")
-  ConnectionPool.singleton("jdbc:postgresql://localhost:5432", "postgres", "postgres")
   implicit val session = AutoSession
+  
+  // initialize connection pool
+  def connect(url: String, port: String, user: String, password: String) = {
+    ConnectionPool.singleton(f"jdbc:postgresql://${url}:${port}", user, password)
+  }
 
   def createTweetsTable() {
     if (!tableExists("tweets")) {

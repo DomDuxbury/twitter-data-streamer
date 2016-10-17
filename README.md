@@ -21,10 +21,22 @@ First argument is a file of the form:
 
 ```json
 {
+  "url": "localhost",
+  "port": "5432",
+  "user": "postgres",
+  "password": "postgres"
+}
+```
+This file configures the connection to PostgreSQL
+
+Second argument is a file of the form:   
+
+```json
+{
   "consumerKey": "key",
   "consumerSecret": "secret",
   "accessToken": "token",
   "accessTokenSecret": "tokensecret"
 }
 ```
-
+This file contains twitter credentials for the [twitter stream api](https://dev.twitter.com/)

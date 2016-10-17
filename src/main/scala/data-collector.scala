@@ -7,18 +7,28 @@ import scala.util.parsing.json._
 
 object dataCollector {
   def main(args: Array[String]): Unit = {
-    
-    postgres.createTweetsTable() 
+   
+    val postgresConfigFilePath = args(0)
+    val postgresConfig = getConfig(postgresConfigFilePath)
 
-    val credsFilePath = args(0)
+    postgres.connect(
+      postgresConfig("url"),
+      postgresConfig("port"),
+      postgresConfig("user"),
+      postgresConfig("password")
+    )
 
-    val creds = getCredentials(credsFilePath)
+    postgres.createTweetsTable 
+
+    val twitterCredsFilePath = args(1)
+
+    val twitterCreds = getConfig(twitterCredsFilePath)
     
     val config = twitterStreamer.createConfig(
-      creds("consumerKey"),
-      creds("consumerSecret"),
-      creds("accessToken"),
-      creds("accessTokenSecret")
+      twitterCreds("consumerKey"),
+      twitterCreds("consumerSecret"),
+      twitterCreds("accessToken"),
+      twitterCreds("accessTokenSecret")
     )
 
     val keywords = Array("bitcoin")
@@ -27,7 +37,7 @@ object dataCollector {
   }
 
   
-  def getCredentials(credsFile: String): Map[String, String] = {
+  def getConfig(credsFile: String): Map[String, String] = {
     
     val credentialFile = Source.fromFile(credsFile)
 

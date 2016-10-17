@@ -13,6 +13,7 @@ object twitterStreamer {
         .setOAuthConsumerSecret(consumerSecret)
         .setOAuthAccessToken(accessToken)
         .setOAuthAccessTokenSecret(accessTokenSecret)
+        .setPrettyDebugEnabled(true)
         .build()
   }
 
@@ -30,7 +31,6 @@ object twitterStreamer {
 
   def stream(keywords: Array[String], config: conf.Configuration) = {
     val twitterStream = new TwitterStreamFactory(config).getInstance
-
     twitterStream.addListener(postgresStatusListener())
     twitterStream.filter(new FilterQuery().track(keywords))
 
